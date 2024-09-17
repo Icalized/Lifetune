@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:text="Sleep Apnea"
+        android:textSize="40sp"
+        android:textAlignment="center"
+        android:fontFamily="@font/inter_extra_light"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"
+        android:textColor="@color/secondary"
+        />
+    <View
+        android:id="@+id/iconHolder"
+        android:layout_width="144dp"
+        android:layout_height="133dp"
+        android:background="@drawable/icon_holder"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="125dp"
+        android:layout_marginLeft="108dp"
+        />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="102dp"
+        android:layout_height="91dp"
+        android:src="@drawable/medical"
+        android:layout_alignStart="@id/iconHolder"
+        android:layout_alignEnd="@id/iconHolder"
+        android:layout_alignTop="@id/iconHolder"
+        android:layout_alignBottom="@id/iconHolder"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/signUp"
+        android:layout_width="340dp"
+        android:layout_height="63dp"
+        android:background="@drawable/input_button"
+        android:text="Sign Up"
+        style="@style/CustomText"
+        android:layout_above="@id/logIn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/logIn"
+        android:layout_width="340dp"
+        android:layout_height="63dp"
+        android:background="@drawable/input_button"
+        android:text="Log In"
+        style="@style/CustomText"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="142dp"
+        />
+
+</RelativeLayout>

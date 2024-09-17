@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Apnea App</string>
+    <string name="login_request">Please enter your details to get OTP</string>
+    <string name="otp_request">A 6 digit OTP has been send to your phone</string>
+</resources>

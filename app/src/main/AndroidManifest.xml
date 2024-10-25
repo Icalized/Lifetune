@@ -15,6 +15,9 @@
         android:theme="@style/Theme.ApneaApp"
         tools:targetApi="31">
         <activity
+            android:name=".MainScreen"
+            android:exported="false" />
+        <activity
             android:name=".TestLoginActivity"
             android:exported="false" />
         <activity

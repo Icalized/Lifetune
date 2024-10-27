@@ -58,8 +58,10 @@ public class SignUpActivity extends AppCompatActivity {
                 currentUser = firebaseAuth.getCurrentUser();
                 if(currentUser != null){
                     //user is logged in
+
                 }else{
                     //user logged out
+
                 }
             }
         };

@@ -3,8 +3,124 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ProfileFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            />
+        <TextView
+            android:id="@+id/edit"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Edit Profile"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_below="@id/heading"
+            android:paddingStart="60dp"
+            android:paddingTop="20dp"
+            android:layout_marginTop="50dp"
+            android:clickable="true"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:src="@drawable/edit_profile"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@id/edit"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="2dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:src="@drawable/right_arrow"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/edit"
+            android:layout_marginTop="20dp"
+            />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/editDiv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit"
+            app:dividerInsetStart="10dp"
+            app:dividerInsetEnd="10dp"
+            app:dividerColor="@color/white"
+            />
+        <TextView
+            android:id="@+id/changePass"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Change Password"
+            android:textColor="@color/black"
+            android:paddingStart="60dp"
+            android:layout_below="@id/editDiv"
+            android:paddingTop="20dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:src="@drawable/change_password"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@id/changePass"
+            android:layout_marginTop="15dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:src="@drawable/right_arrow"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/changePass"
+            android:layout_marginTop="20dp"
+            />
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/passDiv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerInsetStart="10dp"
+            app:dividerInsetEnd="10dp"
+            android:layout_below="@id/changePass"
+            app:dividerColor="@color/white"
+            />
+        <TextView
+            android:id="@+id/logOut"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="Log Out"
+            android:textColor="@color/black"
+            android:layout_below="@id/passDiv"
+            android:paddingStart="60dp"
+            android:paddingTop="20dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:src="@drawable/log_out"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@id/logOut"
+            android:layout_marginTop="15dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:src="@drawable/right_arrow"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/logOut"
+            android:layout_marginTop="20dp"
+            />
 
-
+    </RelativeLayout>
 </FrameLayout>

@@ -68,7 +68,7 @@
             android:textColor="@color/black"
             android:paddingStart="60dp"
             android:layout_below="@id/editDiv"
-            android:paddingTop="20dp"
+            android:paddingTop="25dp"
             />
         <ImageView
             android:layout_width="wrap_content"

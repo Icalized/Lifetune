@@ -6,4 +6,6 @@
     <color name="secondary">#006D77</color>
     <color name="neutral">#EDF6F9</color>
     <color name="textbox_color">#f8f9fa</color>
+    <color name="heart">#ed0c44</color>
+    <color name="oxygen">#0f79db</color>
 </resources>

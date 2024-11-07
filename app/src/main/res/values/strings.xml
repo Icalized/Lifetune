@@ -2,4 +2,6 @@
     <string name="app_name">Apnea App</string>
     <string name="login_request">Please enter your details to get OTP</string>
     <string name="otp_request">A 6 digit OTP has been send to your phone</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

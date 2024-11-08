@@ -4,120 +4,128 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignUpActivity">
+    tools:context=".SignUpActivity"
+    android:background="@color/white"
+    >
 
     <ImageView
-        android:id="@+id/sign_up_illustration"
-        android:layout_width="wrap_content"
-        android:layout_height="370dp"
+        android:id="@+id/illustration"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
         android:src="@drawable/sign_up"
-        android:layout_alignParentTop="true"
+        android:elevation="5dp"
         />
-    <EditText
-        android:id="@+id/usernameBox"
-        android:layout_width="340dp"
-        android:layout_height="63dp"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="540dp"
+        android:background="@drawable/icon_holder"
+        android:layout_alignParentBottom="true"
+        android:elevation="0dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/username"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:startIconTint="@color/black"
+        android:elevation="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/illustration"
         android:hint="Username"
-        android:textAlignment="center"
-        style="@style/CustomText"
-        android:inputType="textAutoComplete"
-        android:background="@drawable/text_box"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/sign_up_illustration"
-        android:layout_marginBottom="17dp"
-        />
-    <View
-        android:id="@+id/name_icon_holder"
-        android:layout_width="55dp"
-        android:layout_height="63dp"
-        android:background="@drawable/custom_editbox_icon_holder"
-        android:layout_alignStart="@id/usernameBox"
-        android:layout_alignBottom="@id/usernameBox"
-        android:layout_alignTop="@id/usernameBox"
-        />
-    <ImageView
-        android:id="@+id/user1Icon"
-        android:layout_width="36px"
-        android:layout_height="38px"
-        android:src="@drawable/user"
-        android:layout_alignStart="@id/name_icon_holder"
-        android:layout_alignBottom="@id/name_icon_holder"
-        android:layout_alignTop="@id/name_icon_holder"
-        android:layout_alignEnd="@id/name_icon_holder"
-        app:tint="@color/neutral" />
-    <EditText
-        android:id="@+id/contactBox"
-        android:layout_width="340dp"
-        android:layout_height="63dp"
+        app:hintTextColor="@color/black"
+        android:autofillHints="username"
+        app:startIconDrawable="@drawable/user"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/black"
+        app:boxBackgroundColor="@color/white"
+        android:layout_marginBottom="20dp"
+        app:boxStrokeColor="@color/primary"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusBottomEnd="15dp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/usernameBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="55dp"
+            android:textColor="@color/black"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/contact"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:boxStrokeColor="@color/primary"
+        app:startIconTint="@color/black"
+        app:boxBackgroundColor="@color/white"
+        android:elevation="5dp"
         android:hint="Email"
-        android:textAlignment="center"
-        style="@style/CustomText"
-        android:background="@drawable/text_box"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/usernameBox"
-        android:layout_marginBottom="17dp"
-        />
-    <View
-        android:id="@+id/contact_icon_holder"
-        android:layout_width="55dp"
-        android:layout_height="63dp"
-        android:background="@drawable/custom_editbox_icon_holder"
-        android:layout_alignStart="@id/contactBox"
-        android:layout_alignBottom="@id/contactBox"
-        android:layout_alignTop="@id/contactBox"
-        />
-    <ImageView
-        android:id="@+id/user2Icon"
-        android:layout_width="36px"
-        android:layout_height="38px"
-        android:src="@drawable/user"
-        android:layout_alignStart="@id/contact_icon_holder"
-        android:layout_alignBottom="@id/contact_icon_holder"
-        android:layout_alignTop="@id/contact_icon_holder"
-        android:layout_alignEnd="@id/contact_icon_holder"
-        app:tint="@color/neutral" />
-    <EditText
-        android:id="@+id/passwordBox"
-        android:layout_width="340dp"
-        android:layout_height="63dp"
+        app:hintTextColor="@color/black"
+        app:startIconDrawable="@drawable/email"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/black"
+        android:autofillHints="emailAddress"
+        android:layout_below="@id/username"
+        android:layout_marginBottom="20dp"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusBottomEnd="15dp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/contactBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="55dp"
+            android:textColor="@color/black"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:boxStrokeColor="@color/primary"
+        app:startIconTint="@color/black"
+        android:elevation="5dp"
         android:hint="Password"
-        android:textAlignment="center"
-        style="@style/CustomText"
-        android:autofillHints="name"
-        android:background="@drawable/text_box"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/contactBox"
-        />
-    <View
-        android:id="@+id/password_icon_holder"
-        android:layout_width="55dp"
-        android:layout_height="63dp"
-        android:background="@drawable/custom_editbox_icon_holder"
-        android:layout_alignStart="@id/passwordBox"
-        android:layout_alignBottom="@id/passwordBox"
-        android:layout_alignTop="@id/passwordBox"
-        />
-    <ImageView
-        android:id="@+id/lockIcon"
-        android:layout_width="36px"
-        android:layout_height="38px"
-        android:src="@drawable/lock"
-        android:layout_alignStart="@id/password_icon_holder"
-        android:layout_alignBottom="@id/password_icon_holder"
-        android:layout_alignTop="@id/password_icon_holder"
-        android:layout_alignEnd="@id/password_icon_holder"
-        app:tint="@color/neutral"
-        />
+        app:hintTextColor="@color/black"
+        app:boxBackgroundColor="@color/white"
+        app:startIconDrawable="@drawable/lock"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/black"
+        android:autofillHints="password"
+        android:layout_below="@id/contact"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusBottomEnd="15dp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="55dp"
+            android:textColor="@color/black"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/signUp"
         android:layout_width="340dp"
-        android:layout_height="63dp"
+        android:layout_height="55dp"
+        android:elevation="10dp"
         android:text="Sign Up"
         style="@style/CustomText"
         android:background="@drawable/input_button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="100dp"
         />
 
 </RelativeLayout>

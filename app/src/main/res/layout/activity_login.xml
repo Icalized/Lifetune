@@ -4,100 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="@color/white"
+    >
 
     <ImageView
-        android:id="@+id/log_in_illustration"
-        android:layout_width="wrap_content"
+        android:id="@+id/illustration"
+        android:layout_width="match_parent"
         android:layout_height="400dp"
         android:src="@drawable/log_in"
-        android:layout_alignParentTop="true"
+        android:elevation="5dp"
         />
-    <TextView
-        android:id="@+id/requestText"
-        android:layout_width="290dp"
-        android:layout_height="57dp"
-        android:text="@string/login_request"
-        android:textSize="20sp"
-        android:fontFamily="@font/montserrat_extra_light"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:layout_below="@id/log_in_illustration"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="540dp"
+        android:background="@drawable/icon_holder"
+        android:layout_alignParentBottom="true"
+        android:elevation="0dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/contact"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:startIconTint="@color/black"
+        android:elevation="5dp"
+        android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
-        />
-    <EditText
-        android:id="@+id/contactBox"
-        android:layout_width="340dp"
-        android:layout_height="63dp"
+        android:layout_below="@id/illustration"
         android:hint="Email"
-        android:textAlignment="center"
-        style="@style/CustomText"
-        android:background="@drawable/text_box"
+        app:hintTextColor="@color/black"
+        android:autofillHints="emailAddress"
+        app:startIconDrawable="@drawable/email"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/black"
+        app:boxBackgroundColor="@color/white"
+        android:layout_marginBottom="20dp"
+        app:boxStrokeColor="@color/primary"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusBottomEnd="15dp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/contactBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="55dp"
+            android:textColor="@color/black"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/requestText"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="15dp"
-        />
-    <View
-        android:id="@+id/contact_icon_holder"
-        android:layout_width="55dp"
-        android:layout_height="63dp"
-        android:background="@drawable/custom_editbox_icon_holder"
-        android:layout_alignStart="@id/contactBox"
-        android:layout_alignBottom="@id/contactBox"
-        android:layout_alignTop="@id/contactBox"
-        />
-    <ImageView
-        android:id="@+id/userIcon"
-        android:layout_width="36px"
-        android:layout_height="38px"
-        android:src="@drawable/user"
-        android:layout_alignStart="@id/contact_icon_holder"
-        android:layout_alignBottom="@id/contact_icon_holder"
-        android:layout_alignTop="@id/contact_icon_holder"
-        android:layout_alignEnd="@id/contact_icon_holder"
-        app:tint="@color/neutral" />
-    <EditText
-        android:id="@+id/passwordBox"
-        android:layout_width="340dp"
-        android:layout_height="63dp"
+        app:boxStrokeColor="@color/primary"
+        app:startIconTint="@color/black"
+        app:boxBackgroundColor="@color/white"
+        android:elevation="5dp"
         android:hint="Password"
-        android:textAlignment="center"
-        style="@style/CustomText"
-        android:background="@drawable/text_box"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/contactBox"
-        />
-    <View
-        android:id="@+id/password_icon_holder"
-        android:layout_width="55dp"
-        android:layout_height="63dp"
-        android:background="@drawable/custom_editbox_icon_holder"
-        android:layout_alignStart="@id/passwordBox"
-        android:layout_alignBottom="@id/passwordBox"
-        android:layout_alignTop="@id/passwordBox"
-        />
-    <ImageView
-        android:id="@+id/lockIcon"
-        android:layout_width="36px"
-        android:layout_height="36px"
-        android:src="@drawable/lock"
-        android:layout_alignStart="@id/password_icon_holder"
-        android:layout_alignBottom="@id/password_icon_holder"
-        android:layout_alignTop="@id/password_icon_holder"
-        android:layout_alignEnd="@id/password_icon_holder"
-        app:tint="@color/neutral"
-        />
+        app:hintTextColor="@color/black"
+        app:startIconDrawable="@drawable/lock"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/black"
+        android:autofillHints="emailAddress"
+        android:layout_below="@id/contact"
+        android:layout_marginBottom="20dp"
+        app:boxCornerRadiusTopStart="15dp"
+        app:boxCornerRadiusTopEnd="15dp"
+        app:boxCornerRadiusBottomStart="15dp"
+        app:boxCornerRadiusBottomEnd="15dp"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="55dp"
+            android:textColor="@color/black"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/Login_button"
         android:layout_width="340dp"
-        android:layout_height="63dp"
+        android:layout_height="55dp"
         android:text="LOG IN"
         style="@style/CustomText"
         android:background="@drawable/input_button"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="100dp"
         />
 
 </RelativeLayout>

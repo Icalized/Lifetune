@@ -36,9 +36,9 @@ public class BluetoothLeService {
     // Services and Characteristics name
     public static final int REQUEST_PERMISSION_LOCATION = 1;
     private static final String TAG = "BluetoothLeService";
-    private static final UUID SERVICE_UUID = UUID.fromString("");
-    private static final UUID BPM_UUID = UUID.fromString("");
-    private static final UUID SPO2_UUID = UUID.fromString("");
+    private static final UUID SERVICE_UUID = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb");
+    private static final UUID BPM_UUID = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb");
+    private static final UUID SPO2_UUID = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb");
 
     // Declaration for the various bluetooth services
     private BluetoothAdapter bluetoothAdapter;

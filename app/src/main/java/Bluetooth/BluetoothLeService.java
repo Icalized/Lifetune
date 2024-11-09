@@ -45,6 +45,7 @@ public class BluetoothLeService {
 
     private static final String TAG = "BluetoothLeService";
     public static final int REQUEST_PERMISSION_LOCATION = 1;
+    private static final int REQUEST_BLUETOOTH_CONNECT_PERMISSION = 2;
 
     // Standard BLE UUIDs for heart rate and SpO2 services/characteristics
     private static final UUID SERVICE_UUID = UUID.fromString("4fafc201-1fb5-459e-8fcc-c5c9c331914b");
@@ -106,19 +107,33 @@ public class BluetoothLeService {
     }
 
     private void promptToEnableBluetooth() {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN)
-                == PackageManager.PERMISSION_GRANTED) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            if (context instanceof Activity) {
-                try {
-                    ((Activity) context).startActivityForResult(enableBtIntent, 1);
-                } catch (ActivityNotFoundException e) {
-                    Log.e(TAG, "Activity to enable Bluetooth not found.", e);
-                    notifyError("Error enabling Bluetooth");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // Check for Android 12 or higher
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+
+                if (context instanceof Activity) {
+                    ActivityCompat.requestPermissions((Activity) context,
+                            new String[]{Manifest.permission.BLUETOOTH_CONNECT},
+                            REQUEST_BLUETOOTH_CONNECT_PERMISSION);
                 }
+                return;
             }
-        } else {
-            requestBluetoothAdminPermission();
+
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                if (context instanceof Activity) {
+                    try {
+                        ((Activity) context).startActivityForResult(enableBtIntent, 1);
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "Activity to enable Bluetooth not found.", e);
+                        notifyError("Error enabling Bluetooth");
+                    }
+                }
+            } else {
+                requestBluetoothAdminPermission();
+            }
         }
     }
 

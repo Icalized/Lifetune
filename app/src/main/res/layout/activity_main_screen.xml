@@ -15,6 +15,23 @@
         android:layout_above="@id/navigationBar"
         android:padding="10dp"
         />
+    <ProgressBar
+        android:id="@+id/connectionProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_above="@id/navigationBar"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:id="@+id/connectionStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_above="@id/connectionProgress"
+        android:layout_centerHorizontal="true"
+        />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationBar"

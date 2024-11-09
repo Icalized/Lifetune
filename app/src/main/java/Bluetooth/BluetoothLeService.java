@@ -41,7 +41,7 @@ public class BluetoothLeService {
     private static final UUID SPO2_UUID = UUID.fromString("00001800-0000-1000-8000-00805f9b34fb");
 
     // Declaration for the various bluetooth services
-    private BluetoothAdapter bluetoothAdapter;
+    public BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
     private BluetoothGatt bluetoothGatt;
     private BluetoothLeScannerCallback callback;
@@ -78,24 +78,17 @@ public class BluetoothLeService {
 
         // Check if Bluetooth Admin permission is granted
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PackageManager.PERMISSION_GRANTED) {
-            new AlertDialog.Builder(context)
-                    .setTitle("Bluetooth Disabled")
-                    .setMessage("Bluetooth is disabled. Would you like to turn it on?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        if (context instanceof Activity) {
-                            try {
-                                ((Activity) context).startActivityForResult(enableBtIntent, 1);  // Request code 1 for enabling Bluetooth
-                            } catch (ActivityNotFoundException e) {
-                                Log.e(TAG, "Activity to enable Bluetooth not found.", e);
-                                Toast.makeText(context, "Error enabling Bluetooth.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    })
-                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                    .show();
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            if (context instanceof MainScreen) {
+                try {
+                    ((MainScreen) context).startActivityForResult(enableBtIntent, 1);  // Request code 1 for enabling Bluetooth
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "Activity to enable Bluetooth not found.", e);
+                    Toast.makeText(context, "Error enabling Bluetooth.", Toast.LENGTH_SHORT).show();
+                }
+            }
         } else {
-            ActivityCompat.requestPermissions((Activity) context,
+            ActivityCompat.requestPermissions((MainScreen) context,
                     new String[]{Manifest.permission.BLUETOOTH_ADMIN},
                     1);  // Request code 1 for Bluetooth Admin permission
         }
@@ -104,6 +97,7 @@ public class BluetoothLeService {
     // Check permissions and start Bluetooth scanning
     private void checkPermissionsAndStartScan() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Only request permissions once
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||
                     ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions((MainScreen) context,
@@ -113,7 +107,7 @@ public class BluetoothLeService {
                 startBluetoothLeScan();
             }
         } else {
-            startBluetoothLeScan();
+            startBluetoothLeScan();  // No permission checks needed for older versions
         }
     }
 

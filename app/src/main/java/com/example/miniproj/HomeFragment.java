@@ -27,15 +27,29 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public void updateBpm(String data){
-        if(bpm != null){
-            bpm.setText(data);
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    public void updateBpm(final String data) {
+        if (getActivity() != null && bpm != null) {
+            getActivity().runOnUiThread(() -> {
+                if (bpm != null) {  // Double-check in case fragment is destroyed
+                    bpm.setText(data);
+                }
+            });
         }
     }
 
-    public void updateSpo2(String data){
-        if(spo2 != null){
-            spo2.setText(data);
+    public void updateSpo2(final String data) {
+        if (getActivity() != null && spo2 != null) {
+            getActivity().runOnUiThread(() -> {
+                if (spo2 != null) {  // Double-check in case fragment is destroyed
+                    spo2.setText(data);
+                }
+            });
         }
     }
 }

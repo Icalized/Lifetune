@@ -24,9 +24,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Executing the creation of database table
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_AWAKE_TABLE = "CREATE TABLE " + Util.DATABASE_TABLE + "( " + Util.KEY_ID + " INTEGER PRIMARY KEY,"
-                + Util.KEY_BPM + " TEXT," + Util.KEY_SPO2 + " TEXT," + ")";
-        db.execSQL(CREATE_AWAKE_TABLE);
+        String CREATE_SLEEP_TABLE = "CREATE TABLE " + Util.DATABASE_TABLE + "( " + Util.KEY_ID + " BIGINT PRIMARY KEY,"
+                + Util.KEY_BPM + " TEXT," + Util.KEY_SPO2 + " TEXT" + ")";
+        db.execSQL(CREATE_SLEEP_TABLE);
     }
 
     // dropping the
@@ -40,7 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void addData(Vitals vitals){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(Util.KEY_BPM, vitals.getBpo2());
+        values.put(Util.KEY_BPM, vitals.getBpm());
         values.put(Util.KEY_SPO2, vitals.getSpo2());
         values.put(Util.KEY_ID,vitals.getTime());
         db.insert(Util.DATABASE_TABLE,null,values);
@@ -56,7 +56,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             do{
                 Vitals vitals = new Vitals();
                 vitals.setTime(cursor.getInt(0));
-                vitals.setBpo2(cursor.getString(1));
+                vitals.setBpm(cursor.getString(1));
                 vitals.setSpo2(cursor.getString(2));
                 list.add(vitals);
             }while (cursor.moveToNext());

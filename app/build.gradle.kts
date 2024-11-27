@@ -52,4 +52,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
 
+    // Ble services
+    implementation ("no.nordicsemi.android:ble:2.9.0") // Adjust the version to the latest
+    implementation ("no.nordicsemi.android.support.v18:scanner:1.5.0") // For BLE scanning support
+
 }

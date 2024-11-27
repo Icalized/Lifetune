@@ -13,14 +13,13 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import Adapter.RecyclerViewAdapter;
 import Database.DatabaseHandler;
 import Model.Vitals;
 
 public class ReportFragment extends Fragment {
 
     private DatabaseHandler db;
-    private RecyclerViewAdapter adapter;
+
     private RecyclerView rcView;
     private List<Vitals> list;
     private Context context;
@@ -40,21 +39,19 @@ public class ReportFragment extends Fragment {
         rcView.setHasFixedSize(true);
         rcView.setLayoutManager(new LinearLayoutManager(context));
         list = db.fetchData();
-        adapter = new RecyclerViewAdapter(list);
-        rcView.setAdapter(adapter);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
+
     }
 
     public void loadData(){
         DatabaseHandler db = new DatabaseHandler(context);
         list.clear();
         list.addAll(db.fetchData());
-        adapter.notifyDataSetChanged();
+
     }
 }

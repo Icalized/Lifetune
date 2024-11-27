@@ -26,8 +26,6 @@ public class LoginActivity extends AppCompatActivity {
 
     //Firebase auth
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseUser currentuser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
 
         //Firebase
         firebaseAuth = FirebaseAuth.getInstance();
+
+        String email = getIntent().getStringExtra("email");
+        email_login.setText(email);
 
         //Button events
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 }
             });
-
         }
 
     }

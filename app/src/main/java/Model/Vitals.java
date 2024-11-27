@@ -1,12 +1,12 @@
 package Model;
 
 public class Vitals {
-    private String bpo2;
+    private String bpm;
     private String spo2;
-    private int time;
+    private long time;
 
-    public Vitals(String bpo2, String spo2, int time) {
-        this.bpo2 = bpo2;
+    public Vitals(String bpm, String spo2, long time) {
+        this.bpm = bpm;
         this.spo2 = spo2;
         this.time = time;
     }
@@ -14,12 +14,12 @@ public class Vitals {
 
     }
 
-    public String getBpo2() {
-        return bpo2;
+    public String getBpm() {
+        return bpm;
     }
 
-    public void setBpo2(String bpo2) {
-        this.bpo2 = bpo2;
+    public void setBpm(String bpm) {
+        this.bpm = bpm;
     }
 
     public String getSpo2() {
@@ -30,11 +30,11 @@ public class Vitals {
         this.spo2 = spo2;
     }
 
-    public int getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(long time) {
         this.time = time;
     }
 }

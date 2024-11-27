@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,8 +26,6 @@ public class LoginActivity extends AppCompatActivity {
 
     //Firebase auth
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseUser currentuser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,9 @@ public class LoginActivity extends AppCompatActivity {
         //Firebase
         firebaseAuth = FirebaseAuth.getInstance();
 
+        String email = getIntent().getStringExtra("email");
+        email_login.setText(email);
+
         //Button events
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,15 +56,20 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUserEmailPwd(String email, String pwd) {
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(pwd)) {
-            firebaseAuth.signInWithEmailAndPassword(email, pwd).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                @Override
-                public void onSuccess(AuthResult authResult) {
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    Intent i = new Intent(LoginActivity.this, TestLoginActivity.class);
-                    startActivity(i);
+            firebaseAuth.signInWithEmailAndPassword(email,pwd).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, MainScreen.class);
+                    startActivity(intent);
+                    finishAffinity();
+                }else{
+                    Toast.makeText(LoginActivity.this, "Sign In First", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
+                    intent.putExtra("email",email);
+                    startActivity(intent);
+                    finish();
                 }
             });
-
         }
 
     }

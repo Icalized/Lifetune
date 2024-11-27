@@ -3,8 +3,12 @@ package com.example.miniproj;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +40,8 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("Users");
 
+    // SharedPreference
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -52,21 +58,10 @@ public class SignUpActivity extends AppCompatActivity {
         //Firebase
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //AuthStateListener listening for changes in authentication state
-        //and responding accordingly
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                currentUser = firebaseAuth.getCurrentUser();
-                if(currentUser != null){
-                    //user is logged in
-
-                }else{
-                    //user logged out
-
-                }
-            }
-        };
+        String email = getIntent().getStringExtra("email");
+        if(email != null){
+            email_create.setText(email);
+        }
 
         //Sign up button event
         signUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -83,20 +78,29 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
+
     private void createUserEmailPwd(String email,String pwd, String username){
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(username)){
             firebaseAuth.createUserWithEmailAndPassword(email,pwd).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        //User created
-                        Toast.makeText(SignUpActivity.this, "User created successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUpActivity.this, "New User created", Toast.LENGTH_SHORT).show();
+                        sharedPreferences = getSharedPreferences("my_pref",MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("username",username_create.getText().toString());
+                        editor.commit();
+                        Intent intent = new Intent(SignUpActivity.this, MainScreen.class);
+                        startActivity(intent);
+                        finishAffinity();
+                    }else{
+                        Toast.makeText(SignUpActivity.this, "Problem Signing In", Toast.LENGTH_SHORT).show();
                     }
-
                 }
             });
+        }else{
+            Toast.makeText(SignUpActivity.this, "Fill all the fields", Toast.LENGTH_SHORT).show();
         }
     }
 }

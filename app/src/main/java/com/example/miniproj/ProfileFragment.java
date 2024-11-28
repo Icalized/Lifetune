@@ -16,8 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileFragment extends Fragment {
 
-    // Initialisation
-    private TextView logOut;
+    // Declaration
+    private TextView logOut, changePass;
     private FirebaseAuth firebaseAuth;
     private Context context;
     @Override
@@ -26,18 +26,30 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
+        // Initialisation
         firebaseAuth = FirebaseAuth.getInstance();
         context = view.getContext();
-
         logOut = view.findViewById(R.id.logOut);
+        changePass = view.findViewById(R.id.changePass);
 
+        // Implementation
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showLogoutDialog();
             }
         });
+        changePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, OtpVerify.class);
+                startActivity(intent);
+            }
+        });
+
+
         return view;
+
     }
 
     private void showLogoutDialog() {

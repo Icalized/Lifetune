@@ -80,19 +80,12 @@ public class HomeFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "HomeFragment resumed.");
     }
-/*
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        bpmTextView = null;
-        spo2TextView = null;
-    }
-*/
+
     public void updateBpm(final String data) {
         Log.d(TAG, "Updating BPM TextView with data: " + data);
         if (isFragmentReady && bpmTextView != null) {
             bpmTextView.setText(data);
-            saveDataToPreferences(data, spo2TextView.getText().toString());
+            saveDataToPreferences(data, bpmTextView.getText().toString());
         } else {
             Log.d(TAG, "BPM TextView is null or fragment not ready");
         }
@@ -102,7 +95,7 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "Updating SpO2 TextView with data: " + data);
         if (isFragmentReady && spo2TextView != null) {
             spo2TextView.setText(data);
-            saveDataToPreferences(bpmTextView.getText().toString(), data);
+            saveDataToPreferences(spo2TextView.getText().toString(), data);
         } else {
             Log.d(TAG, "SpO2 TextView is null or fragment not ready");
         }

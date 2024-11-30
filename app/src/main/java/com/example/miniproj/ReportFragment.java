@@ -1,5 +1,7 @@
 package com.example.miniproj;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -21,7 +23,6 @@ import Model.Vitals;
 
 public class ReportFragment extends Fragment {
 
-   // TAG
     private static final String TAG = "ReportFragment";
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,12 +35,6 @@ public class ReportFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_report, container, false);
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
     }
 
     private boolean filterDataDay(long time){
@@ -76,5 +71,4 @@ public class ReportFragment extends Fragment {
         }
         return -1;
     }
-
 }

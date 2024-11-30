@@ -72,9 +72,9 @@
                 android:id="@+id/bpmText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="90"
                 android:textColor="@color/heart"
                 android:textSize="25sp"
-
                 android:layout_alignParentEnd="true"
                 android:layout_alignBaseline="@id/bpmValue"
                 android:layout_marginEnd="50dp"
@@ -149,9 +149,9 @@
                 android:id="@+id/spo2Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="90"
                 android:textSize="25sp"
                 android:textColor="@color/oxygen"
-
                 android:layout_alignParentEnd="true"
                 android:layout_alignBaseline="@id/spo2Value"
                 android:layout_marginEnd="50dp"

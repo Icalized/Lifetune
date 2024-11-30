@@ -1,7 +1,6 @@
 package com.example.miniproj;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,10 +17,11 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity {
     //Widgets
     Button signUpBtn, loginBtn;
-
     // Firebase
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
 
         //Importing views and widgets
         signUpBtn = findViewById(R.id.signUp);
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
+
             }
         });
 

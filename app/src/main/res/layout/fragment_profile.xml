@@ -66,9 +66,10 @@
             android:background="@drawable/input_button"
             android:layout_below="@id/heading"
             android:layout_toRightOf="@id/username"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="56dp"
             android:layout_marginStart="7dp"
             android:text="Change"
+            android:textColor="@color/black"
             />
 
         <com.google.android.material.divider.MaterialDivider
@@ -89,6 +90,7 @@
             android:paddingStart="60dp"
             android:layout_below="@id/editDiv"
             android:paddingTop="25dp"
+            android:clickable="true"
             />
         <ImageView
             android:layout_width="wrap_content"
@@ -124,6 +126,7 @@
             android:layout_below="@id/passDiv"
             android:paddingStart="60dp"
             android:paddingTop="20dp"
+            android:clickable="true"
             />
         <ImageView
             android:layout_width="wrap_content"

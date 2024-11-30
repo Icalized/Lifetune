@@ -59,7 +59,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,10 +86,7 @@ public class ProfileFragment extends Fragment {
                     firebaseAuth.signOut();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .remove(ProfileFragment.this)
-                            .commit();
+                    getActivity().finishAffinity();
                 })
                 .setNegativeButton("No", (dialog, which) -> {
                     // Dismiss the dialog

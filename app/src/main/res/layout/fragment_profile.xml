@@ -20,42 +20,61 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             />
-        <TextView
-            android:id="@+id/edit"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="Edit Profile"
-            android:textColor="@color/black"
-            android:textSize="15sp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/username"
+            android:layout_width="250dp"
+            android:layout_height="56dp"
+            app:startIconTint="@color/black"
+            android:elevation="5dp"
+            android:layout_toRightOf="@id/editIcon"
             android:layout_below="@id/heading"
-            android:paddingStart="60dp"
-            android:paddingTop="20dp"
+            android:hint="Username"
+            app:hintTextColor="@color/black"
+            android:autofillHints="username"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            app:boxBackgroundColor="@color/white"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="50dp"
-            android:clickable="true"
-            />
+            app:boxStrokeColor="@color/primary"
+            app:boxCornerRadiusTopStart="15dp"
+            app:boxCornerRadiusTopEnd="15dp"
+            app:boxCornerRadiusBottomStart="15dp"
+            app:boxCornerRadiusBottomEnd="15dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/usernameBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
         <ImageView
+            android:id="@+id/editIcon"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:src="@drawable/edit_profile"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@id/edit"
-            android:layout_marginTop="15dp"
+            android:layout_below="@id/heading"
+            android:layout_marginTop="65dp"
             android:layout_marginStart="2dp"
             />
-        <ImageView
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/changeName"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:src="@drawable/right_arrow"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@id/edit"
-            android:layout_marginTop="20dp"
+            android:layout_height="50dp"
+            android:background="@drawable/input_button"
+            android:layout_below="@id/heading"
+            android:layout_toRightOf="@id/username"
+            android:layout_marginTop="55dp"
+            android:layout_marginStart="7dp"
+            android:text="Change"
             />
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/editDiv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edit"
+            android:layout_below="@id/username"
             app:dividerInsetStart="10dp"
             app:dividerInsetEnd="10dp"
             app:dividerColor="@color/white"

@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ProfileFragment extends Fragment {
 
     // Initialisation
-    private TextView logOut, changePass, change;
+    private TextView logOut, changePass;
     private TextInputEditText username;
     private AppCompatButton changeName;
     private FirebaseAuth firebaseAuth;

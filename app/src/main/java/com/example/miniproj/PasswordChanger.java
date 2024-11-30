@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class PasswordChanger extends AppCompatActivity {
 
-    private TextInputEditText emailBox, change;
+    private TextInputEditText emailBox;
     private ProgressBar progress;
     private AppCompatButton resetPass;
 

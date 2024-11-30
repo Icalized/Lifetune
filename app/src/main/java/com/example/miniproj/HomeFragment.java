@@ -20,25 +20,6 @@ public class HomeFragment extends Fragment {
     private TextView username;
     private boolean isFragmentReady = false;
     private SharedPreferences sharedPreferences;
-    private static final String PREFS_NAME = "HealthPrefs";
-    private static final String KEY_BPM = "bpm";
-    private static final String KEY_SPO2 = "spo2";
-
-    private void saveDataToPreferences(String bpm, String spo2) {
-        SharedPreferences prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(KEY_BPM, bpm);
-        editor.putString(KEY_SPO2, spo2);
-        editor.apply();
-    }
-
-    private void loadDataFromPreferences() {
-        SharedPreferences prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String bpm = prefs.getString(KEY_BPM, "--");
-        String spo2 = prefs.getString(KEY_SPO2, "--");
-        bpmTextView.setText(bpm);
-        spo2TextView.setText(spo2);
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -62,7 +43,6 @@ public class HomeFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("my_pref", Context.MODE_PRIVATE);
         String name = sharedPreferences.getString("username","");
         username.setText(name);
-        loadDataFromPreferences();
         Log.d(TAG, "onCreateView: bpmTextView = " + (bpmTextView != null) + ", spo2TextView = " + (spo2TextView != null));
         return rootView;
     }
@@ -80,19 +60,11 @@ public class HomeFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "HomeFragment resumed.");
     }
-/*
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        bpmTextView = null;
-        spo2TextView = null;
-    }
-*/
+
     public void updateBpm(final String data) {
         Log.d(TAG, "Updating BPM TextView with data: " + data);
         if (isFragmentReady && bpmTextView != null) {
             bpmTextView.setText(data);
-            saveDataToPreferences(data, spo2TextView.getText().toString());
         } else {
             Log.d(TAG, "BPM TextView is null or fragment not ready");
         }
@@ -102,7 +74,6 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "Updating SpO2 TextView with data: " + data);
         if (isFragmentReady && spo2TextView != null) {
             spo2TextView.setText(data);
-            saveDataToPreferences(bpmTextView.getText().toString(), data);
         } else {
             Log.d(TAG, "SpO2 TextView is null or fragment not ready");
         }

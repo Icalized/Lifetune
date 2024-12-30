@@ -55,7 +55,7 @@ public class ReportFragment extends Fragment {
 
         // Prepare dataset
         BarDataSet dataSet = new BarDataSet(entries, "Vitals");
-        dataSet.setColors(new int[]{Color.RED,Color.BLUE}); // Apply material colors
+        dataSet.setColors(new int[]{Color.rgb(255, 153, 153),Color.rgb(144, 238, 144)});
         dataSet.setStackLabels(new String[]{"BPM", "SpO2"}); // Labels for stacks
 
         // Prepare BarData

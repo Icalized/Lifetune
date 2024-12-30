@@ -87,7 +87,6 @@ public class BluetoothLeService extends BleManager {
         String formattedDateTime = now.format(formatter);
         Log.d(TAG, "Formatted DateTime: " + formattedDateTime);
 
-        // Convert to integer
         try {
             long dateTimeInt = Long.parseLong(formattedDateTime); // Use long for large numbers
             Log.d(TAG,"date converted");

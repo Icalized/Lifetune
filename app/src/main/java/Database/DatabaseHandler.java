@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.github.mikephil.charting.data.BarEntry;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,31 +38,60 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CLOSE_DATABASE);
         onCreate(db);
     }
+
     // Adding the vitals to the db
-    public void addData(Vitals vitals){
+    public void addData(Vitals vitals) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Util.KEY_BPM, vitals.getBpm());
         values.put(Util.KEY_SPO2, vitals.getSpo2());
-        values.put(Util.KEY_ID,vitals.getTime());
-        db.insert(Util.DATABASE_TABLE,null,values);
+        values.put(Util.KEY_ID, vitals.getTime());
+        db.insert(Util.DATABASE_TABLE, null, values);
         db.close();
     }
+
     //Fetching values in the db
-    public List<Vitals> fetchData(){
+    public List<Vitals> fetchData() {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Vitals> list = new ArrayList<>();
         String SELECT_ALL = "SELECT * FROM " + Util.DATABASE_TABLE;
-        Cursor cursor = db.rawQuery(SELECT_ALL,null);
-        if(cursor.moveToFirst()){
-            do{
+        Cursor cursor = db.rawQuery(SELECT_ALL, null);
+        if (cursor.moveToFirst()) {
+            do {
                 Vitals vitals = new Vitals();
                 vitals.setTime(cursor.getInt(0));
                 vitals.setBpm(cursor.getString(1));
                 vitals.setSpo2(cursor.getString(2));
                 list.add(vitals);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         return list;
+    }
+
+    /*Taking long dates from db and converting them to days with respective averages */
+    public List<BarEntry> getDailyAverages() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        List<BarEntry> entries = new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT strftime('%w', time, 'unixepoch') AS day_of_week, " +
+                        "AVG(CAST(bpm AS REAL)) AS avg_bpm, " +
+                        "AVG(CAST(spo2 AS REAL)) AS avg_spo2 " +
+                        "FROM Sleep " +
+                        "GROUP BY day_of_week " +
+                        "ORDER BY day_of_week",
+                null
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                int dayOfWeek = cursor.getInt(0); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+                float avgBpm = cursor.getFloat(1);
+                float avgSpo2 = cursor.getFloat(2);
+                // Add both averages as BarEntry (1 Bar per day)
+                entries.add(new BarEntry(dayOfWeek, new float[]{avgBpm, avgSpo2}));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return entries;
     }
 }

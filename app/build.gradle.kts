@@ -56,4 +56,7 @@ dependencies {
     implementation ("no.nordicsemi.android:ble:2.9.0") // Adjust the version to the latest
     implementation ("no.nordicsemi.android.support.v18:scanner:1.5.0") // For BLE scanning support
 
+    //graph
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 }

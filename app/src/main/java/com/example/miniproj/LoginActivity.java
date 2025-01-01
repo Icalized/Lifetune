@@ -63,11 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finishAffinity();
                 }else{
-                    Toast.makeText(LoginActivity.this, "Sign In First", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this,SignUpActivity.class);
-                    intent.putExtra("email",email);
-                    startActivity(intent);
-                    finish();
+                    Toast.makeText(LoginActivity.this, "Incorrect Email or Password", Toast.LENGTH_SHORT).show();
                 }
             });
         }

@@ -1,6 +1,9 @@
 package com.example.miniproj;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -21,8 +33,8 @@ import Model.Vitals;
 
 public class ReportFragment extends Fragment {
 
-   // TAG
     private static final String TAG = "ReportFragment";
+    private BarChart barchart;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,48 +45,39 @@ public class ReportFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_report, container, false);
+
+        // Initialize bar Chart
+        barchart = view.findViewById(R.id.barChart);
+        DatabaseHandler db = new DatabaseHandler(getContext());
+
+        // Get the BPM and SpO2 data for the week
+        List<BarEntry> entries = db.getDailyAverages();
+
+        // Prepare dataset
+        BarDataSet dataSet = new BarDataSet(entries, "Vitals");
+        dataSet.setColors(new int[]{Color.rgb(255, 153, 153),Color.rgb(144, 238, 144)});
+        dataSet.setStackLabels(new String[]{"BPM", "SpO2"}); // Labels for stacks
+
+        // Prepare BarData
+        BarData barData = new BarData(dataSet);
+        barData.setBarWidth(0.5f); // Width of each bar
+
+        // Configure X-Axis Labels
+        String[] daysOfWeek = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+        barchart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(daysOfWeek));
+        barchart.getXAxis().setGranularity(1f);
+        barchart.getXAxis().setGranularityEnabled(true);
+
+        // Configure the chart
+        barchart.setData(barData);
+        barchart.setFitBars(true);
+        barchart.getDescription().setEnabled(false);
+        barchart.getAxisRight().setEnabled(false); // Disable the right Y-axis
+        barchart.getAxisLeft().setAxisMinimum(0f); // Minimum value for Y-axis
+        barchart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        barchart.animateY(1000); // Animation for Y-axis
+        barchart.invalidate(); // Refresh the chart
+
         return view;
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
-    private boolean filterDataDay(long time){
-        long dateFromDb = reduceTime(time);
-        long currentDate = currentDate();
-
-        if(currentDate != -1 && currentDate == dateFromDb){
-            return true;
-        }
-        return false;
-    }
-
-    private long reduceTime(long date){
-        long onlyDate = date/1000000;
-        return onlyDate;
-    }
-
-    private long currentDate(){
-        LocalDateTime now = LocalDateTime.now();
-
-        // Format as yyyyMMdd
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-        String formattedDateTime = now.format(formatter);
-        Log.d(TAG, "Formatted DateTime: " + formattedDateTime);
-
-        // Convert to integer
-        try {
-            long dateTimeInt = Long.parseLong(formattedDateTime); // Use long for large numbers
-            Log.d(TAG,"date converted");
-            return dateTimeInt;
-        } catch (NumberFormatException e) {
-            Log.d(TAG,"Error converting date/time to integer: " + e.getMessage());
-        }
-        return -1;
-    }
-
 }

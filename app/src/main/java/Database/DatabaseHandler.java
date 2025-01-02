@@ -73,7 +73,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         List<BarEntry> entries = new ArrayList<>();
         Cursor cursor = db.rawQuery(
-                "SELECT strftime('%w', time, 'unixepoch') AS day_of_week, " +
+                "SELECT strftime('%w', \n" +
+                        "                SUBSTR(time, 1, 4) || '-' || \n" +
+                        "                SUBSTR(time, 5, 2) || '-' || \n" +
+                        "                SUBSTR(time, 7, 2) || ' ' || \n" +
+                        "                SUBSTR(time, 9, 2) || ':' || \n" +
+                        "                SUBSTR(time, 11, 2) || ':' || \n" +
+                        "                SUBSTR(time, 13, 2), \n" +
+                        "                'utc') AS day_of_week, " +
                         "AVG(CAST(bpm AS REAL)) AS avg_bpm, " +
                         "AVG(CAST(spo2 AS REAL)) AS avg_spo2 " +
                         "FROM Sleep " +

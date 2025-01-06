@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -24,9 +26,14 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import Database.DatabaseHandler;
 import Model.Vitals;
@@ -35,6 +42,8 @@ public class ReportFragment extends Fragment {
 
     private static final String TAG = "ReportFragment";
     private BarChart barchart;
+    private TextView isApnea, Timestamp, sessionStart, sessionEnd, duration;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +55,12 @@ public class ReportFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_report, container, false);
 
+        isApnea = view.findViewById(R.id.apneaText);
+        Timestamp = view.findViewById(R.id.timestamp);
+        sessionStart = view.findViewById(R.id.sessionStart);
+        sessionEnd = view.findViewById(R.id.sessionEnd);
+        duration = view.findViewById(R.id.duration);
+
         // Initialize bar Chart
         barchart = view.findViewById(R.id.barChart);
         DatabaseHandler db = new DatabaseHandler(getContext());
@@ -55,7 +70,7 @@ public class ReportFragment extends Fragment {
 
         // Prepare dataset
         BarDataSet dataSet = new BarDataSet(entries, "Vitals");
-        dataSet.setColors(new int[]{Color.rgb(255, 153, 153),Color.rgb(144, 238, 144)});
+        dataSet.setColors(new int[]{Color.rgb(255, 153, 153), Color.rgb(144, 238, 144)});
         dataSet.setStackLabels(new String[]{"BPM", "SpO2"}); // Labels for stacks
 
         // Prepare BarData
@@ -78,6 +93,63 @@ public class ReportFragment extends Fragment {
         barchart.animateY(1000); // Animation for Y-axis
         barchart.invalidate(); // Refresh the chart
 
+        // Apnea Showing on UI
+        boolean sleepApnea = db.checkSleepApnea(75, 90);
+        if (sleepApnea) {
+            isApnea.setText("Sleep Apnea detected");
+        } else {
+            isApnea.setText("Sleep Apnea not detected");
+        }
+        ArrayList<Long> array = db.timestamps();
+        if (!array.isEmpty()) {
+            String startTimestamp = longToStringTime(array.get(0));
+            String finishTimestamp = longToStringTime(array.get(array.size() - 1));
+            Timestamp.setText("Apnea Timestamp : " + startTimestamp + "-" + finishTimestamp);
+        }
+
+        Long[] sessions = db.getFirstAndLastTimeForToday();
+        Long firstTime = sessions[0]; // Extract first time
+        Long lastTime = sessions[1]; // Extract last time
+
+        String sessionStartTime = longToStringTime(firstTime);
+        String sessionFinishTime = longToStringTime(lastTime);
+        String Duration = calculateDuration(firstTime,lastTime);
+
+        sessionStart.setText("Session start : " + sessionStartTime);
+        sessionEnd.setText("Session end : " + sessionFinishTime);
+        duration.setText("Duration : " + Duration);
+
         return view;
+    }
+
+    private String longToStringTime(long time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        return sdf.format(new Date(time));
+    }
+
+    public static String calculateDuration(long startTime, long endTime) {
+        // Define the date format
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+
+        try {
+            // Parse the long values into Date objects
+            String startStr = String.valueOf(startTime);
+            String endStr = String.valueOf(endTime);
+
+            long diffInMillis = sdf.parse(endStr).getTime() - sdf.parse(startStr).getTime();
+
+            // Convert the difference to hours, minutes, and seconds
+            long diffInSeconds = diffInMillis / 1000;
+            long hours = diffInSeconds / 3600;
+            long minutes = (diffInSeconds % 3600) / 60;
+            long seconds = diffInSeconds % 60;
+
+            // Return the duration as a formatted string
+            return String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "Invalid time format";
+        }
     }
 }

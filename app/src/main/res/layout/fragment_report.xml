@@ -5,12 +5,52 @@
     android:layout_height="match_parent"
     tools:context=".ReportFragment">
 
-
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChart"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            />
-
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    />
+                <TextView
+                    android:id="@+id/apneaText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Is Apnea"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="20dp"
+                    />
+                <TextView
+                    android:id="@+id/timestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Timestamp"
+                    android:layout_marginStart="50dp"
+                    />
+                <TextView
+                    android:id="@+id/sessionStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SessionStart"
+                    android:layout_marginStart="50dp"
+                    />
+                <TextView
+                    android:id="@+id/sessionEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SessionEnd"
+                    android:layout_marginStart="50dp"
+                    />
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Duration"
+                    android:layout_marginStart="50dp"
+                    />
+        </LinearLayout>
 
 </FrameLayout>

@@ -7,25 +7,21 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import Model.Vitals;
 import Util.Util;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private final String TAG = "DatabaseHandler";
     public DatabaseHandler(@Nullable Context context) {
         super(context, Util.DATABASE_NAME, null, Util.DATABASE_VER);
     }
@@ -79,21 +75,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<BarEntry> getDailyAverages() {
         SQLiteDatabase db = this.getWritableDatabase();
         List<BarEntry> entries = new ArrayList<>();
-
         Cursor cursor = db.rawQuery(
-                "SELECT strftime('%w', \n" +
-                        "                SUBSTR(time, 1, 4) || '-' || \n" +
-                        "                SUBSTR(time, 5, 2) || '-' || \n" +
-                        "                SUBSTR(time, 7, 2) || ' ' || \n" +
-                        "                SUBSTR(time, 9, 2) || ':' || \n" +
-                        "                SUBSTR(time, 11, 2) || ':' || \n" +
-                        "                SUBSTR(time, 13, 2), \n" +
-                        "                'utc') AS day_of_week, " +
+                "SELECT strftime('%w', time, 'unixepoch') AS day_of_week, " +
                         "AVG(CAST(bpm AS REAL)) AS avg_bpm, " +
                         "AVG(CAST(spo2 AS REAL)) AS avg_spo2 " +
                         "FROM Sleep " +
                         "GROUP BY day_of_week " +
-                        "ORDER BY day_of_week", null
+                        "ORDER BY day_of_week",
+                null
         );
 
         if (cursor.moveToFirst()) {
@@ -108,104 +97,49 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         return entries;
     }
+    public List<Entry> getConsecutiveDrops() {
+        List<Entry> result = new ArrayList<>();
 
-    // Checking for apnea
-    ArrayList<Long> arr = new ArrayList<>();
+        String query = "WITH consecutive_drops AS (" +
+                "  SELECT t1.time AS t1_time, t2.time AS t2_time, t3.time AS t3_time, " +
+                "         t4.time AS t4_time, t5.time AS t5_time " +
+                "  FROM Sleep t1 " +
+                "  JOIN Sleep t2 ON t2.time = t1.time + 1 " +
+                "  JOIN Sleep t3 ON t3.time = t2.time + 1 " +
+                "  JOIN Sleep t4 ON t4.time = t3.time + 1 " +
+                "  JOIN Sleep t5 ON t5.time = t4.time + 1 " +
+                "  WHERE t1.bpm < 70 AND t1.spo2 < 90 " +
+                "    AND t2.bpm < 70 AND t2.spo2 < 90 " +
+                "    AND t3.bpm < 70 AND t3.spo2 < 90 " +
+                "    AND t4.bpm < 70 AND t4.spo2 < 90 " +
+                "    AND t5.bpm < 70 AND t5.spo2 < 90" +
+                ")" +
+                "SELECT * FROM consecutive_drops";
 
-    public boolean checkSleepApnea(int thresholdBpm, int thresholdSpo2){
-        SQLiteDatabase db = getReadableDatabase();
-        String query = "SELECT * FROM Sleep WHERE bpm < 70 AND spo2 < 90 ORDER BY time ASC"; // Adjust table name and order column
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        if (cursor != null) {
-            try {
-                int bpmIndex = cursor.getColumnIndex("bpm");
-                int spo2Index = cursor.getColumnIndex("spo2");
-                int timeIndex = cursor.getColumnIndex("time");
+        int index = 0; // For x-axis values in the chart
+        if (cursor.moveToFirst()) {
+            do {
+                // Create an Entry for each time in the consecutive drops
+                @SuppressLint("Range") float t1 = cursor.getLong(cursor.getColumnIndex("t1_time"));
+                @SuppressLint("Range") float t2 = cursor.getLong(cursor.getColumnIndex("t2_time"));
+                @SuppressLint("Range") float t3 = cursor.getLong(cursor.getColumnIndex("t3_time"));
+                @SuppressLint("Range") float t4 = cursor.getLong(cursor.getColumnIndex("t4_time"));
+                @SuppressLint("Range") float t5 = cursor.getLong(cursor.getColumnIndex("t5_time"));
 
-                while (cursor.moveToNext()) {
-                    int bpm = cursor.getInt(bpmIndex);
-                    int spo2 = cursor.getInt(spo2Index);
-
-                    // Check if the current row meets the threshold
-                    if (bpm < thresholdBpm && spo2 < thresholdSpo2) {
-                        // Check next 5 rows
-                        boolean allBelowThreshold = true;
-
-                        for (int i = 0; i < 5; i++) {
-                            if (!cursor.moveToNext()) {
-                                allBelowThreshold = false; // If not enough rows
-                                break;
-                            }
-
-                            bpm = cursor.getInt(bpmIndex);
-                            spo2 = cursor.getInt(spo2Index);
-                            Long time = cursor.getLong(timeIndex);
-                            arr.add(time);
-
-                            if (bpm >= thresholdBpm || spo2 >= thresholdSpo2) {
-                                allBelowThreshold = false;
-                                arr.clear();
-                                break;
-                            }
-                        }
-
-                        if (allBelowThreshold) {
-                            return true; // Sleep apnea condition detected
-                        } else {
-                            // Move cursor back to the row after the initial one
-                            cursor.moveToPosition(cursor.getPosition() - 5);
-                        }
-                    }
-                }
-            } finally {
-                cursor.close();
-            }
+                // Add each time as a point, assigning index as x-axis
+                result.add(new Entry(index++, t1));
+                result.add(new Entry(index++, t2));
+                result.add(new Entry(index++, t3));
+                result.add(new Entry(index++, t4));
+                result.add(new Entry(index++, t5));
+            } while (cursor.moveToNext());
         }
-        return false; // No apnea detected
+
+        cursor.close();
+        db.close();
+        return result;
     }
-
-    public ArrayList<Long> timestamps(){
-        return arr;
-    }
-
-    // Method to get the first and last time for the current day
-    @SuppressLint("Range")
-    public Long[] getFirstAndLastTimeForToday() {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        // Get the current date in yyyyMMdd format
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
-        String todayDate = sdf.format(new Date());
-
-        long startDay = Long.parseLong(todayDate + "000000");
-        long endDay = Long.parseLong(todayDate + "235959");
-
-        // Query to find the first and last time for today
-        String query = "SELECT " +
-                "MIN(time) AS first_time, " +
-                "MAX(time) AS last_time " +
-                "FROM Sleep " +
-                "WHERE time BETWEEN ? and ?";
-
-        String[] selectionArgs = {String.valueOf(startDay),String.valueOf(endDay)};
-
-        Long firstTime = 0L;
-        Long lastTime = 0L;
-
-        try (Cursor cursor = db.rawQuery(query, selectionArgs)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                int firstTimeIndex = cursor.getColumnIndex("first_time");
-                int lastTimeIndex = cursor.getColumnIndex("last_time");
-
-                if (firstTimeIndex >= 0 && lastTimeIndex >= 0) {
-                    firstTime = cursor.isNull(firstTimeIndex) ? 0L : cursor.getLong(firstTimeIndex);
-                    lastTime = cursor.isNull(lastTimeIndex) ? 0L : cursor.getLong(lastTimeIndex);
-                }
-            }
-        }
-        return new Long[]{firstTime,lastTime};
-    }
-
-
 }

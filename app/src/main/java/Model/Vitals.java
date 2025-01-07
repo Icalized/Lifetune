@@ -10,10 +10,9 @@ public class Vitals {
         this.spo2 = spo2;
         this.time = time;
     }
-
     public Vitals(){
-    }
 
+    }
 
     public String getBpm() {
         return bpm;

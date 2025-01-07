@@ -26,10 +26,6 @@
         android:theme="@style/Theme.ApneaApp"
         tools:targetApi="31">
         <activity
-            android:name=".PasswordChanger"
-            android:exported="false" >
-        </activity>
-        <activity
             android:name=".MainScreen"
             android:exported="false" >
         </activity>

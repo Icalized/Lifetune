@@ -97,49 +97,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         return entries;
     }
-    public List<Entry> getConsecutiveDrops() {
-        List<Entry> result = new ArrayList<>();
 
-        String query = "WITH consecutive_drops AS (" +
-                "  SELECT t1.time AS t1_time, t2.time AS t2_time, t3.time AS t3_time, " +
-                "         t4.time AS t4_time, t5.time AS t5_time " +
-                "  FROM Sleep t1 " +
-                "  JOIN Sleep t2 ON t2.time = t1.time + 1 " +
-                "  JOIN Sleep t3 ON t3.time = t2.time + 1 " +
-                "  JOIN Sleep t4 ON t4.time = t3.time + 1 " +
-                "  JOIN Sleep t5 ON t5.time = t4.time + 1 " +
-                "  WHERE t1.bpm < 70 AND t1.spo2 < 90 " +
-                "    AND t2.bpm < 70 AND t2.spo2 < 90 " +
-                "    AND t3.bpm < 70 AND t3.spo2 < 90 " +
-                "    AND t4.bpm < 70 AND t4.spo2 < 90 " +
-                "    AND t5.bpm < 70 AND t5.spo2 < 90" +
-                ")" +
-                "SELECT * FROM consecutive_drops";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        int index = 0; // For x-axis values in the chart
-        if (cursor.moveToFirst()) {
-            do {
-                // Create an Entry for each time in the consecutive drops
-                @SuppressLint("Range") float t1 = cursor.getLong(cursor.getColumnIndex("t1_time"));
-                @SuppressLint("Range") float t2 = cursor.getLong(cursor.getColumnIndex("t2_time"));
-                @SuppressLint("Range") float t3 = cursor.getLong(cursor.getColumnIndex("t3_time"));
-                @SuppressLint("Range") float t4 = cursor.getLong(cursor.getColumnIndex("t4_time"));
-                @SuppressLint("Range") float t5 = cursor.getLong(cursor.getColumnIndex("t5_time"));
-
-                // Add each time as a point, assigning index as x-axis
-                result.add(new Entry(index++, t1));
-                result.add(new Entry(index++, t2));
-                result.add(new Entry(index++, t3));
-                result.add(new Entry(index++, t4));
-                result.add(new Entry(index++, t5));
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return result;
-    }
 }
+

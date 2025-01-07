@@ -84,41 +84,6 @@ public class ReportFragment extends Fragment {
         barchart.animateY(1000); // Animation for Y-axis
         barchart.invalidate(); // Refresh the chart
 
-        LineChart lineChart = view.findViewById(R.id.lineChart);
-        DatabaseHandler dbHelper = new DatabaseHandler(getContext());
-
-// Fetch the consecutive drops as a list of Entry objects
-        List<Entry> consecutiveDrops = dbHelper.getConsecutiveDrops();
-
-// Check if the data is valid
-        if (consecutiveDrops == null || consecutiveDrops.isEmpty()) {
-            Log.d(TAG, "No data available for consecutive drops.");
-        } else {
-            // Create a LineDataSet
-            LineDataSet dataSetT = new LineDataSet(consecutiveDrops, "Consecutive Drops");
-            dataSetT.setColor(Color.BLUE);
-            dataSetT.setValueTextColor(Color.BLACK);
-            dataSetT.setLineWidth(2f);
-            dataSetT.setCircleRadius(3f);
-
-            // Prepare LineData
-            LineData lineData = new LineData(dataSetT);
-
-            // Configure the chart
-            lineChart.setData(lineData);
-            lineChart.setDrawGridBackground(false);
-
-            // Set chart description
-            Description description = new Description();
-            description.setText("Consecutive Drops");
-            lineChart.setDescription(description);
-
-            // Refresh chart
-            lineChart.invalidate();
-        }
-
-
-
         return view;
     }
 }

@@ -16,16 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import Database.DatabaseHandler;
@@ -77,6 +83,41 @@ public class ReportFragment extends Fragment {
         barchart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         barchart.animateY(1000); // Animation for Y-axis
         barchart.invalidate(); // Refresh the chart
+
+        LineChart lineChart = view.findViewById(R.id.lineChart);
+        DatabaseHandler dbHelper = new DatabaseHandler(getContext());
+
+// Fetch the consecutive drops as a list of Entry objects
+        List<Entry> consecutiveDrops = dbHelper.getConsecutiveDrops();
+
+// Check if the data is valid
+        if (consecutiveDrops == null || consecutiveDrops.isEmpty()) {
+            Log.d(TAG, "No data available for consecutive drops.");
+        } else {
+            // Create a LineDataSet
+            LineDataSet dataSetT = new LineDataSet(consecutiveDrops, "Consecutive Drops");
+            dataSetT.setColor(Color.BLUE);
+            dataSetT.setValueTextColor(Color.BLACK);
+            dataSetT.setLineWidth(2f);
+            dataSetT.setCircleRadius(3f);
+
+            // Prepare LineData
+            LineData lineData = new LineData(dataSetT);
+
+            // Configure the chart
+            lineChart.setData(lineData);
+            lineChart.setDrawGridBackground(false);
+
+            // Set chart description
+            Description description = new Description();
+            description.setText("Consecutive Drops");
+            lineChart.setDescription(description);
+
+            // Refresh chart
+            lineChart.invalidate();
+        }
+
+
 
         return view;
     }

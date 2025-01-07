@@ -5,52 +5,97 @@
     android:layout_height="match_parent"
     tools:context=".ReportFragment">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             >
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/generateReport"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Generate Report"
+                    android:layout_below="@id/barChart"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/primary"
+                    android:visibility="visible"
+                    android:textColor="@color/neutral"
+                    android:layout_marginTop="40dp"
+                    />
+
                 <TextView
                     android:id="@+id/apneaText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Is Apnea"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginTop="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="45dp"
+                    android:layout_marginTop="70dp"
+                    android:layout_below="@id/barChart"
+                    android:visibility="invisible"
+                    />
+                <TextView
+                    android:id="@+id/apneadesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="Please note that this is a preliminary indication based on limited data andshould not be considered a diagnosis. We recommend consulting a healthcare professional for further evaluation if you experience symptoms like snoring, pauses in breathing during sleep, or excessive daytime fatigue."
+                    android:textAlignment="center"
+                    android:textColor="@color/primary"
+                    android:layout_below="@id/apneaText"
+                    android:visibility="invisible"
                     />
                 <TextView
                     android:id="@+id/timestamp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Timestamp"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
                     android:layout_marginStart="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/apneadesc"
+                    android:visibility="invisible"
                     />
                 <TextView
                     android:id="@+id/sessionStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SessionStart"
+                    android:textSize="14sp"
                     android:layout_marginStart="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_below="@id/timestamp"
+                    android:visibility="invisible"
                     />
                 <TextView
                     android:id="@+id/sessionEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="SessionEnd"
+                    android:textSize="14sp"
                     android:layout_marginStart="50dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_below="@id/sessionStart"
+                    android:visibility="invisible"
                     />
                 <TextView
                     android:id="@+id/duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Duration"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
                     android:layout_marginStart="50dp"
+                    android:layout_below="@id/sessionEnd"
+                    android:visibility="invisible"
                     />
-        </LinearLayout>
+        </RelativeLayout>
 
 </FrameLayout>

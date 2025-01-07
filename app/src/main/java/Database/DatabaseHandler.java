@@ -189,19 +189,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "WHERE time BETWEEN ? and ?";
 
         String[] selectionArgs = {String.valueOf(startDay),String.valueOf(endDay)};
-        Cursor cursor = db.rawQuery(query, selectionArgs);
 
-        Long firstTime = null;
-        Long lastTime = null;
+        Long firstTime = 0L;
+        Long lastTime = 0L;
 
-        if(cursor != null){
-            try{
-                if(cursor.moveToFirst()){
-                    firstTime = cursor.getLong(cursor.getColumnIndex("first_time"));
-                    lastTime = cursor.getLong(cursor.getColumnIndex("last_time"));
+        try (Cursor cursor = db.rawQuery(query, selectionArgs)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int firstTimeIndex = cursor.getColumnIndex("first_time");
+                int lastTimeIndex = cursor.getColumnIndex("last_time");
+
+                if (firstTimeIndex >= 0 && lastTimeIndex >= 0) {
+                    firstTime = cursor.isNull(firstTimeIndex) ? 0L : cursor.getLong(firstTimeIndex);
+                    lastTime = cursor.isNull(lastTimeIndex) ? 0L : cursor.getLong(lastTimeIndex);
                 }
-            }finally {
-                cursor.close();
             }
         }
         return new Long[]{firstTime,lastTime};

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,7 +43,8 @@ public class ReportFragment extends Fragment {
 
     private static final String TAG = "ReportFragment";
     private BarChart barchart;
-    private TextView isApnea, Timestamp, sessionStart, sessionEnd, duration;
+    private TextView isApnea, apneaDesc, Timestamp, sessionStart, sessionEnd, duration;
+    AppCompatButton generate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,11 +58,12 @@ public class ReportFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_report, container, false);
 
         isApnea = view.findViewById(R.id.apneaText);
+        apneaDesc = view.findViewById(R.id.apneadesc);
         Timestamp = view.findViewById(R.id.timestamp);
         sessionStart = view.findViewById(R.id.sessionStart);
         sessionEnd = view.findViewById(R.id.sessionEnd);
         duration = view.findViewById(R.id.duration);
-
+        generate = view.findViewById(R.id.generateReport);
         // Initialize bar Chart
         barchart = view.findViewById(R.id.barChart);
         DatabaseHandler db = new DatabaseHandler(getContext());
@@ -95,17 +98,8 @@ public class ReportFragment extends Fragment {
 
         // Apnea Showing on UI
         boolean sleepApnea = db.checkSleepApnea(75, 90);
-        if (sleepApnea) {
-            isApnea.setText("Sleep Apnea detected");
-        } else {
-            isApnea.setText("Sleep Apnea not detected");
-        }
+
         ArrayList<Long> array = db.timestamps();
-        if (!array.isEmpty()) {
-            String startTimestamp = longToStringTime(array.get(0));
-            String finishTimestamp = longToStringTime(array.get(array.size() - 1));
-            Timestamp.setText("Apnea Timestamp : " + startTimestamp + "-" + finishTimestamp);
-        }
 
         Long[] sessions = db.getFirstAndLastTimeForToday();
         Long firstTime = sessions[0]; // Extract first time
@@ -115,16 +109,46 @@ public class ReportFragment extends Fragment {
         String sessionFinishTime = longToStringTime(lastTime);
         String Duration = calculateDuration(firstTime,lastTime);
 
-        sessionStart.setText("Session start : " + sessionStartTime);
-        sessionEnd.setText("Session end : " + sessionFinishTime);
-        duration.setText("Duration : " + Duration);
+        generate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                generate.setVisibility(View.INVISIBLE);
+                sessionStart.setVisibility(View.VISIBLE);
+                sessionEnd.setVisibility(View.VISIBLE);
+               // duration.setVisibility(View.VISIBLE);
+                Timestamp.setVisibility(View.VISIBLE);
+                isApnea.setVisibility(View.VISIBLE);
+                apneaDesc.setVisibility(View.VISIBLE);
+                if (sleepApnea) {
+                    isApnea.setTextColor(Color.parseColor("#ea1f15"));
+                    isApnea.setText("Notice: Possible Signs of Sleep Apnea Detected");
+                } else {
+                    isApnea.setText("No Possible Signs of Sleep Apnea Detected");
+                }
+                if (!array.isEmpty()) {
+                    String startTimestamp = longToStringTime(array.get(0));
+                    String finishTimestamp = longToStringTime(array.get(array.size() - 1));
+                    Timestamp.setTextColor(Color.parseColor("#ea1f15"));
+                    Timestamp.setText("Apnea duration detected from " + startTimestamp + " to " + finishTimestamp);
+                }
+                sessionStart.setTextColor(Color.parseColor("#ea1f15"));
+                sessionEnd.setTextColor(Color.parseColor("#ea1f15"));
+                sessionStart.setText("Today's session start time is " + sessionStartTime);
+                sessionEnd.setText("Today's session end time is " + sessionFinishTime);
+                //duration.setText("Duration : " + Duration);
+
+            }
+        });
 
         return view;
     }
 
     private String longToStringTime(long time) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        return sdf.format(new Date(time));
+        String currentTimeinString = String.valueOf(time);
+        String hours = currentTimeinString.substring(8,10);
+        String mins = currentTimeinString.substring(10,12);
+        String seconds = currentTimeinString.substring(12,14);
+        return new String(hours + ":" + mins + ":" + seconds);
     }
 
     public static String calculateDuration(long startTime, long endTime) {
@@ -152,4 +176,5 @@ public class ReportFragment extends Fragment {
             return "Invalid time format";
         }
     }
+
 }

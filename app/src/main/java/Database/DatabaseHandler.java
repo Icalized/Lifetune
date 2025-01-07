@@ -206,4 +206,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return new Long[]{firstTime,lastTime};
     }
+
+
+
+
+
 }
+
